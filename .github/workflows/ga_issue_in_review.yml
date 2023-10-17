@@ -13,7 +13,7 @@ jobs:
     - name: Get Issue Number from Branch Name
       id: issue_number
       run: |
-        echo "${{ github.event.pull_request.head.ref }}" | awk '{ gsub(/[^0-9].*/, "", $0); print "number="$0; }' >> $GITHUB_OUTPUT
+        echo "${{ github.event.pull_request.head.ref }}" | { grep -oE '^\s*[0-9]+' || echo ""; } | sed 's/^/number=/' >> $GITHUB_OUTPUT
     - name: Change Progress Status for Issue
       uses: EndBug/project-fields@v1 # Changes the project field
       if: ${{ steps.issue_number.outputs.number != '' }}
