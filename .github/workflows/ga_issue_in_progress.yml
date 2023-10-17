@@ -1,4 +1,4 @@
-name: Move Issue in Progress
+name: Move Issue in Progress and Add Assignee
 
 on:
   - create
@@ -22,3 +22,30 @@ jobs:
         project_url: https://github.com/users/janiswehen/projects/6
         resource_url: https://github.com/janiswehen/Github-Automation/issues/${{ steps.issue_number.outputs.number }}
         values: 🏗️ In Progress
+    - name: Add Creator as Assignee
+      uses: actions/github-script@v6
+      env:
+          ISSUE_NUMBER: '${{ steps.issue_number.outputs.number }}'
+          ASSIGNEE: '${{ github.event.sender.login }}'
+      with:
+        github-token: ${{ secrets.BOT_TOKEN }}
+        script: |
+          const { ISSUE_NUMBER, ASSIGNEE } = process.env;
+          console.log(`Issue Number: ${ISSUE_NUMBER}`);
+
+          if (ISSUE_NUMBER.length < 1) {
+            console.log('No Issue Number found!');
+            return;
+          }
+          if (ASSIGNEE.length < 1) {
+            console.log('No Assignee found!');
+            return;
+          }
+
+          console.log(`Add Assignee: ${assignee}`);
+          await github.rest.issues.addAssignees({
+            issue_number: ISSUE_NUMBER,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            assignees: [assignee]
+          });
