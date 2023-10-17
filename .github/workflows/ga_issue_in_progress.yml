@@ -1,20 +1,18 @@
 name: Issue in Progress
 
 on:
-  create:
-    ref_type:
-      - branch
+  - create
 
 jobs:
   issue-in-progress:
     name: Add Progress Status for Issue
     runs-on: ubuntu-latest
+    if: ${{ github.event.ref_type == 'branch' }}
     steps:
-    - uses: actions/checkout@v4
     - name: Get Issue Number from Branch Name
       id: issue_number
       run: |
-        echo "${{ github.event.ref }}" | awk '{ gsub(/[^0-9].*/, "", $0); print "number="$0; }' >> $GITHUB_OUTPUT
+        echo "${{ github.event.ref }}" | { grep -oE '^\s*[0-9]+' || echo ""; } | sed 's/^/number=/' >> $GITHUB_OUTPUT
     - name: Change Progress Status for Issue
       uses: EndBug/project-fields@v1 # Changes the project field
       if: ${{ steps.issue_number.outputs.number != '' }}
