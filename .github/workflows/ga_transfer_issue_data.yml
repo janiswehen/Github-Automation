@@ -1,7 +1,7 @@
 name: Transfer Labels and Assignees
 
 on:
-  pull_request:
+  pull_request_target:
     types:
       - opened
 
