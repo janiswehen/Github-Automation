@@ -14,7 +14,8 @@ jobs:
       id: issue_number
       run: |
         echo "${{ github.event.pull_request.head.ref }}" | awk '{ gsub(/[^0-9].*/, "", $0); print "number="$0; }' >> $GITHUB_OUTPUT
-    - uses: actions/github-script@v6
+    - name: Transfer Labels and Assignees from Issue to PR
+      uses: actions/github-script@v6
       id: my-script
       env:
           ISSUE_NUMBER: '${{ steps.issue_number.outputs.number }}'
