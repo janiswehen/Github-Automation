@@ -23,41 +23,41 @@ jobs:
       with:
         github-token: ${{ secrets.BOT_TOKEN }}
         script: |
-          const { ISSUE_NUMBER, PR_NUMBER } = process.env
-          console.log(`Issue Number: ${ISSUE_NUMBER}, PR Number: ${PR_NUMBER}`)
+          const { ISSUE_NUMBER, PR_NUMBER } = process.env;
+          console.log(`Issue Number: ${ISSUE_NUMBER}, PR Number: ${PR_NUMBER}`);
           if (ISSUE_NUMBER.length < 1) {
-            console.log('No Issue Number found!')
-            return
+            console.log('No Issue Number found!');
+            return;
           }
           
           const issue = await github.rest.issues.get({
             issue_number: ISSUE_NUMBER,
             owner: context.repo.owner,
             repo: context.repo.repo,
-          })
-          const labels = issue.data.labels.map(label => label.name)
-          const assignees = issue.data.assignees.map(assignee => assignee.login)
+          });
+          const labels = issue.data.labels.map(label => label.name);
+          const assignees = issue.data.assignees.map(assignee => assignee.login);
 
           if (labels.length == 0) {
-            console.log('No Labels to transfer')
+            console.log('No Labels to transfer');
           } else {
-            console.log(`Transferring Labels: ${labels}`)
+            console.log(`Transferring Labels: ${labels}`);
             await github.rest.issues.addLabels({
               issue_number: PR_NUMBER,
               owner: context.repo.owner,
               repo: context.repo.repo,
               labels: labels
-            })
+            });
           }
 
           if (assignees.length == 0) {
-            console.log('No Assignees to transfer')
+            console.log('No Assignees to transfer');
           } else {
-            console.log(`Transferring Assignees: ${assignees}`)
+            console.log(`Transferring Assignees: ${assignees}`);
             await github.rest.issues.addAssignees({
               issue_number: PR_NUMBER,
               owner: context.repo.owner,
               repo: context.repo.repo,
               assignees: assignees
-            })
+            });
           }
