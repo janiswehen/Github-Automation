@@ -10,8 +10,6 @@ jobs:
     name: Transfer Issue to PR
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repo
-      uses: actions/checkout@v2
     - name: Get Issue Number from Branch Name
       id: issue_number
       run: |

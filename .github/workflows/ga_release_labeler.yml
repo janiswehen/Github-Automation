@@ -15,8 +15,6 @@ jobs:
     name: Add Release Label
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repo
-      uses: actions/checkout@v2
     - uses: actions/github-script@v6
       id: my-script
       env:

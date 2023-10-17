@@ -9,7 +9,6 @@ jobs:
     name: Update PR Project Item
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
       - name: Move to '🏗️ Development' column
         if: ${{ github.event.pull_request.draft == true && github.event.pull_request.merged == false }}
         uses: EndBug/project-fields@v1 # Changes the project field

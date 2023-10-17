@@ -10,7 +10,6 @@ jobs:
     name: Add Progress Status for Issue
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
     - name: Get Issue Number from Branch Name
       id: issue_number
       run: |
