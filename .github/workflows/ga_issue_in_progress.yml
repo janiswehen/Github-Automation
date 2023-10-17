@@ -1,4 +1,4 @@
-name: Issue in Progress
+name: Move Issue in Progress
 
 on:
   - create
