@@ -28,25 +28,25 @@ jobs:
       with:
         github-token: ${{ secrets.BOT_TOKEN }}
         script: |
-          const { ISSUE_NUMBER, PR_NUMBER } = process.env
-          const release_label = '⚠ Release'
+          const { ISSUE_NUMBER, PR_NUMBER } = process.env;
+          const release_label = '⚠ Release';
 
           await github.rest.issues.addLabels({
             issue_number: PR_NUMBER,
             owner: context.repo.owner,
             repo: context.repo.repo,
             labels: [release_label]
-          })
-          console.log('Added release label to PR')
+          });
+          console.log('Added release label to PR');
 
           if (ISSUE_NUMBER.length < 1) {
-            console.log('No Issue Number found!')
-            return
+            console.log('No Issue Number found!');
+            return;
           }
           await github.rest.issues.addLabels({
             issue_number: ISSUE_NUMBER,
             owner: context.repo.owner,
             repo: context.repo.repo,
             labels: [release_label]
-          })
-          console.log('Added release label to Issue')
+          });
+          console.log('Added release label to Issue');
