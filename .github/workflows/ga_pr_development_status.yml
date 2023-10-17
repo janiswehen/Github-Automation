@@ -1,0 +1,39 @@
+name: Update Project development Status for PR
+
+on:
+  pull_request:
+    types: [opened, reopened, ready_for_review, converted_to_draft, closed]
+
+jobs:
+  update-pr-status:
+    name: Update PR Project Item
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Move to '🏗️ Development' column
+        if: ${{ github.event.pull_request.draft == true && github.event.pull_request.merged == false }}
+        uses: EndBug/project-fields@v1 # Changes the project field
+        with:
+          fields: PR Status
+          github_token: ${{ secrets.BOT_TOKEN }}
+          project_url: https://github.com/users/janiswehen/projects/6
+          resource_url: https://github.com/janiswehen/Github-Automation/issues/${{ github.event.pull_request.number }}
+          values: 🏗️ Development
+      - name: Move to '🕵️ Ready for Test Review' column
+        if: ${{ github.event.pull_request.draft == false && github.event.pull_request.merged == false }}
+        uses: EndBug/project-fields@v1 # Changes the project field
+        with:
+          fields: PR Status
+          github_token: ${{ secrets.BOT_TOKEN }}
+          project_url: https://github.com/users/janiswehen/projects/6
+          resource_url: https://github.com/janiswehen/Github-Automation/issues/${{ github.event.pull_request.number }}
+          values: 🕵️ Ready for Test Review
+      - name: Move to '✨ Merged' column
+        if: ${{ github.event.pull_request.merged == true }}
+        uses: EndBug/project-fields@v1 # Changes the project field
+        with:
+          fields: PR Status
+          github_token: ${{ secrets.BOT_TOKEN }}
+          project_url: https://github.com/users/janiswehen/projects/6
+          resource_url: https://github.com/janiswehen/Github-Automation/issues/${{ github.event.pull_request.number }}
+          values: ✨ Merged

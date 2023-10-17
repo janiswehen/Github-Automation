@@ -1,20 +1,20 @@
-name: Issue in Progress
+name: Issue in Review
 
 on:
-  create:
-    ref_type:
-      - branch
+  pull_request:
+    types: [ opened, ready_for_review ]
 
 jobs:
-  issue-in-progress:
+  issue_in_review:
     name: Add Progress Status for Issue
+    if: ${{ github.event.pull_request.draft == false }}
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
     - name: Get Issue Number from Branch Name
       id: issue_number
       run: |
-        echo "${{ github.event.ref }}" | awk '{ gsub(/[^0-9].*/, "", $0); print "number="$0; }' >> $GITHUB_OUTPUT
+        echo "${{ github.event.pull_request.head.ref }}" | awk '{ gsub(/[^0-9].*/, "", $0); print "number="$0; }' >> $GITHUB_OUTPUT
     - name: Change Progress Status for Issue
       uses: EndBug/project-fields@v1 # Changes the project field
       if: ${{ steps.issue_number.outputs.number != '' }}
@@ -23,4 +23,4 @@ jobs:
         github_token: ${{ secrets.BOT_TOKEN }}
         project_url: https://github.com/users/janiswehen/projects/6
         resource_url: https://github.com/janiswehen/Github-Automation/issues/${{ steps.issue_number.outputs.number }}
-        values: 🏗️ In Progress
+        values: 🔍 In Review
