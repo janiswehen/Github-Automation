@@ -42,10 +42,10 @@ jobs:
             return;
           }
 
-          console.log(`Add Assignee: ${assignee}`);
+          console.log(`Add Assignee: ${ASSIGNEE}`);
           await github.rest.issues.addAssignees({
             issue_number: ISSUE_NUMBER,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            assignees: [assignee]
+            assignees: [ASSIGNEE]
           });
