@@ -1,14 +1,13 @@
 name: Issue in Progress
 
 on:
-  create:
-    ref_type:
-      - branch
+  - create
 
 jobs:
   issue-in-progress:
     name: Add Progress Status for Issue
     runs-on: ubuntu-latest
+    if: ${{ github.event.ref_type == 'branch' }}
     steps:
     - name: Get Issue Number from Branch Name
       id: issue_number
