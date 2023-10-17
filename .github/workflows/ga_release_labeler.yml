@@ -15,18 +15,37 @@ jobs:
     name: Add Release Label
     runs-on: ubuntu-latest
     steps:
+    - name: Get Issue Number from Branch Name
+      id: issue_number
+      run: |
+        echo "${{ github.event.pull_request.head.ref }}" | awk '{ gsub(/[^0-9].*/, "", $0); print "number="$0; }' >> $GITHUB_OUTPUT
     - uses: actions/github-script@v6
       id: my-script
       env:
+          ISSUE_NUMBER: '${{ steps.issue_number.outputs.number }}'
           PR_NUMBER: '${{ github.event.pull_request.number }}'
       with:
         github-token: ${{ secrets.BOT_TOKEN }}
         script: |
-          const { PR_NUMBER } = process.env
+          const { ISSUE_NUMBER, PR_NUMBER } = process.env
           const release_label = '⚠ Release'
+
           await github.rest.issues.addLabels({
             issue_number: PR_NUMBER,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            labels: labels
+            labels: [release_label]
           })
+          console.log('Added release label to PR')
+
+          if (ISSUE_NUMBER.length < 1) {
+            console.log('No Issue Number found!')
+            return
+          }
+          await github.rest.issues.addLabels({
+            issue_number: ISSUE_NUMBER,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            labels: [release_label]
+          })
+          console.log('Added release label to Issue')
