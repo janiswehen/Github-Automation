@@ -1,4 +1,4 @@
-name: Issue in Review
+name: Move Issue in Review
 
 on:
   pull_request_target:
