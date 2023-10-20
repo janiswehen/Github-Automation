@@ -41,7 +41,7 @@ jobs:
             console.log('No Labels to transfer');
           } else {
             console.log(`Transferring Labels: ${labels}`);
-            await github.rest.issues.addLabels({
+            await github.rest.pulls.addLabels({
               issue_number: PR_NUMBER,
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -53,7 +53,7 @@ jobs:
             console.log('No Assignees to transfer');
           } else {
             console.log(`Transferring Assignees: ${assignees}`);
-            await github.rest.issues.addAssignees({
+            await github.rest.pulls.addAssignees({
               issue_number: PR_NUMBER,
               owner: context.repo.owner,
               repo: context.repo.repo,
